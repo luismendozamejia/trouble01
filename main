@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PV Owner Basic Checks – Support Checklist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-elevated: #020617;
+      --bg-card: #020617;
+      --border-subtle: #1f2937;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.15);
+      --accent-strong: rgba(59, 130, 246, 0.4);
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --danger: #f97373;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 18px 50px rgba(0, 0, 0, 0.55);
+      --transition-fast: 0.18s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #020617 38%, #020617 100%);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 1100px;
+      background: radial-gradient(circle at top left, #020617 0, #020617 45%, #020617 100%);
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      box-shadow: var(--shadow-soft);
+      padding: 20px 18px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px 4px 4px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    header h1 span.logo-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #bfdbfe, #3b82f6);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+    }
+
+    header p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      color: var(--text-soft);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .badge.accent {
+      border-color: var(--accent-strong);
+      color: #bfdbfe;
+      background: radial-gradient(circle at top left, var(--accent-soft), rgba(15, 23, 42, 0.96));
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 6px 2px;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    button,
+    .chip-toggle {
+      border: none;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .btn {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition-fast), border-color var(--transition-fast),
+        transform var(--transition-fast), box-shadow var(--transition-fast),
+        color var(--transition-fast);
+    }
+
+    .btn span.icon {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .btn.primary {
+      background: radial-gradient(circle at top left, var(--accent-soft), #0b1120);
+      border-color: var(--accent-strong);
+      color: #e5e7eb;
+      box-shadow: 0 0 18px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn:hover {
+      background: rgba(15, 23, 42, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+      color: #e5e7eb;
+      border-color: rgba(75, 85, 99, 1);
+    }
+
+    .btn.primary:hover {
+      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.3), #020617);
+      border-color: var(--accent);
+    }
+
+    .filter {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .filter input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 14px;
+      height: 14px;
+    }
+
+    main {
+      margin-top: 4px;
+      padding: 0 2px 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: calc(100vh - 160px);
+      overflow: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148, 163, 184, 0.7) rgba(15, 23, 42, 0.8);
+    }
+
+    main::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    main::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    main::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, rgba(59, 130, 246, 0.6), rgba(30, 64, 175, 0.95));
+      border-radius: 999px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.96), #020617 60%);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+        transform var(--transition-fast), background var(--transition-fast),
+        opacity 0.18s ease-out;
+      opacity: 0.97;
+      position: relative;
+    }
+
+    .card.hidden {
+      display: none;
+    }
+
+    .card.resolved {
+      border-color: rgba(34, 197, 94, 0.4);
+      background: radial-gradient(circle at top, rgba(22, 101, 52, 0.25), #020617);
+      opacity: 0.9;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.06), transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-header {
+      width: 100%;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      background: linear-gradient(
+        90deg,
+        rgba(30, 64, 175, 0.18),
+        rgba(15, 23, 42, 0.95),
+        rgba(15, 23, 42, 0.98)
+      );
+      border: none;
+      color: inherit;
+      text-align: left;
+    }
+
+    .card-header-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .card-number {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      opacity: 0.9;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .card-title-row h2 {
+      margin: 0;
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+
+    .card-subtitle {
+      margin: 0;
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .card-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .status-pill {
+      font-size: 0.7rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .status-pill.done {
+      border-color: rgba(34, 197, 94, 0.7);
+      color: #bbf7d0;
+      background: radial-gradient(circle at top left, rgba(22, 163, 74, 0.25), #022c22);
+    }
+
+    .chevron {
+      font-size: 0.9rem;
+      transition: transform var(--transition-fast);
+      color: var(--text-soft);
+    }
+
+    .card.expanded .chevron {
+      transform: rotate(180deg);
+    }
+
+    .card-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.22s ease-out;
+      padding: 0 14px;
+    }
+
+    .card.expanded .card-body {
+      padding-bottom: 10px;
+      max-height: 800px;
+    }
+
+    .card-body-inner {
+      padding-top: 8px;
+      padding-bottom: 4px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+
+    @media (min-width: 720px) {
+      .card-body-inner {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .block-section {
+      padding: 6px 8px;
+      border-radius: var(--radius-md);
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px dashed rgba(55, 65, 81, 0.9);
+    }
+
+    .block-section h3 {
+      margin: 0 0 4px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .block-section p {
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .block-section ul {
+      margin: 2px 0 0 16px;
+      padding: 0;
+    }
+
+    .block-section li {
+      margin-bottom: 2px;
+    }
+
+    .resolved-block {
+      grid-column: 1 / -1;
+      margin-top: 2px;
+      padding: 6px 8px;
+      border-radius: var(--radius-md);
+      background: rgba(22, 163, 74, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .resolved-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+    }
+
+    .resolved-header input[type="checkbox"] {
+      accent-color: #22c55e;
+      width: 15px;
+      height: 15px;
+    }
+
+    .resolved-header span.label {
+      font-weight: 600;
+    }
+
+    .resolved-block p {
+      margin: 0;
+      font-size: 0.78rem;
+    }
+
+    .resolved-block p strong {
+      font-weight: 600;
+    }
+
+    .footnote {
+      margin-top: 6px;
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      text-align: right;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>
+        <span class="logo-dot"></span>
+        PV Owner Basic Checks – Support Flow
+      </h1>
+      <p>
+        Guided checklist for non-technical PV plant owners. Use it as a support script
+        to identify, verify and escalate issues.
+      </p>
+      <div class="badge-row">
+        <span class="badge accent">Dark mode</span>
+        <span class="badge">Field-friendly</span>
+        <span class="badge">Support playbook</span>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="button-group">
+        <button class="btn primary" id="expandAll">
+          <span class="icon">▾</span> Expand all
+        </button>
+        <button class="btn" id="collapseAll">
+          <span class="icon">▸</span> Collapse all
+        </button>
+      </div>
+      <label class="filter">
+        <input type="checkbox" id="hideResolved" />
+        Hide resolved items
+      </label>
+    </div>
+
+    <main id="cardContainer">
+      <!-- 1 -->
+      <section class="card expanded" data-id="1">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">1 · Monitoring</span>
+            <div class="card-title-row">
+              <h2>Check the app / monitoring portal</h2>
+            </div>
+            <p class="card-subtitle">
+              Basic check of daily production and alarms.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>1.1 Identification</h3>
+              <p>Customer reports low or zero production, or an error in the monitoring app/portal.</p>
+            </div>
+            <div class="block-section">
+              <h3>1.2 Verification</h3>
+              <p><strong>1.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send us a screenshot of today’s production and any error messages that appear in the app.”</li>
+              </ul>
+              <p><strong>1.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Since when have you noticed this issue in the app?</li>
+                <li>Do you see any error or alarm symbol?</li>
+                <li>Is production at zero or just lower than usual?</li>
+              </ul>
+              <p><strong>1.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Compare today’s production with previous similar days.</li>
+                <li>Check if one inverter/string shows 0 production.</li>
+                <li>Check for active alarms in the monitoring platform.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">1.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Explain the cause, confirm normal production and close the ticket.</p>
+              <p><strong>If no:</strong> Collect screenshots and data and escalate to technical support / installer.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="card expanded" data-id="2">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">2 · Monitoring</span>
+            <div class="card-title-row">
+              <h2>Compare groups of panels / strings</h2>
+            </div>
+            <p class="card-subtitle">
+              Detect unbalanced production between strings or inverters.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>2.1 Identification</h3>
+              <p>Monitoring or customer shows one area/string producing much less than others.</p>
+            </div>
+            <div class="block-section">
+              <h3>2.2 Verification</h3>
+              <p><strong>2.2.1 Templates</strong></p>
+              <ul>
+                <li>“Could you send us screenshots of the production of each inverter/string for today and for one normal day?”</li>
+              </ul>
+              <p><strong>2.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Is the low production constant or only at certain hours?</li>
+                <li>Does that part have more shade than the rest?</li>
+                <li>Has this difference always been there?</li>
+              </ul>
+              <p><strong>2.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Compare each string/inverter percentage vs. total.</li>
+                <li>Check historical data to see since when the difference appears.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">2.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Lower production is due to design (orientation, shade). Explain and close ticket.</p>
+              <p><strong>If no:</strong> Possible fault (string, connector, panel). Escalate to technical support / field visit.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section class="card expanded" data-id="3">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">3 · Monitoring</span>
+            <div class="card-title-row">
+              <h2>Check consumption vs. production</h2>
+            </div>
+            <p class="card-subtitle">
+              Understand self-consumption behaviour and strange consumption.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>3.1 Identification</h3>
+              <p>Customer doubts about bills or self-consumption level.</p>
+            </div>
+            <div class="block-section">
+              <h3>3.2 Verification</h3>
+              <p><strong>3.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send us a screenshot showing both production and consumption for a full day.”</li>
+              </ul>
+              <p><strong>3.2.2 Phone questions</strong></p>
+              <ul>
+                <li>At what times do you usually use big appliances?</li>
+                <li>Have you changed any appliance recently?</li>
+                <li>Are you comparing the same period (same month last year)?</li>
+              </ul>
+              <p><strong>3.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Compare consumption curve vs. production curve.</li>
+                <li>Look for new, constant high consumption during night or off-peak hours.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">3.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Behaviour explained and customer informed. Close ticket.</p>
+              <p><strong>If no:</strong> Suspicious consumption pattern. Escalate to energy/technical team.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section class="card expanded" data-id="4">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">4 · Protections</span>
+            <div class="card-title-row">
+              <h2>Check if PV protections are ON (“up”)</h2>
+            </div>
+            <p class="card-subtitle">
+              Visual check of PV and main breakers (no unsafe work).
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>4.1 Identification</h3>
+              <p>Customer reports no production; possible breaker issue.</p>
+            </div>
+            <div class="block-section">
+              <h3>4.2 Verification</h3>
+              <p><strong>4.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please take a clear photo of your main electrical panel and any sub-panel labelled ‘PV’ before touching anything.”</li>
+              </ul>
+              <p><strong>4.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Do you see any breaker in the DOWN position?</li>
+                <li>Are any breakers labelled “PV”, “Solar”, “Inverter”, “DC/AC”?</li>
+                <li>Has there been a recent power cut or storm?</li>
+              </ul>
+              <p><strong>4.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check last online time of inverter.</li>
+                <li>Check if production dropped suddenly to zero.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">4.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> PV breaker was off, now back on and production returns. Close ticket.</p>
+              <p><strong>If no:</strong> Breaker cannot be turned on or trips immediately. Escalate to electrician/installer.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section class="card expanded" data-id="5">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">5 · Protections</span>
+            <div class="card-title-row">
+              <h2>If a breaker is OFF (“down”)</h2>
+            </div>
+            <p class="card-subtitle">
+              Capture evidence and understand which breaker is affected.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>5.1 Identification</h3>
+              <p>Customer confirms a breaker related to PV is down.</p>
+            </div>
+            <div class="block-section">
+              <h3>5.2 Verification</h3>
+              <p><strong>5.2.1 Templates</strong></p>
+              <ul>
+                <li>“Before changing any position, please send us a photo showing the breaker that is down and its label.”</li>
+              </ul>
+              <p><strong>5.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Which breaker is down: PV or main house breaker?</li>
+                <li>Did it go down while using many appliances or during a storm?</li>
+                <li>Have you tried to put it up? What happens?</li>
+              </ul>
+              <p><strong>5.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check time when production stopped vs. time breaker tripped.</li>
+                <li>Check if other electrical events are visible in monitoring.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">5.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Breaker now stable and system producing. Close ticket.</p>
+              <p><strong>If no:</strong> Breaker keeps tripping. Escalate to on-site technical inspection.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section class="card expanded" data-id="6">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">6 · Protections</span>
+            <div class="card-title-row">
+              <h2>Track how often the protection trips</h2>
+            </div>
+            <p class="card-subtitle">
+              Identify patterns for recurring breaker trips.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>6.1 Identification</h3>
+              <p>Customer reports recurring breaker trips.</p>
+            </div>
+            <div class="block-section">
+              <h3>6.2 Verification</h3>
+              <p><strong>6.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please keep a small log with date, time, and which breaker trips, and send us a photo each time it happens.”</li>
+              </ul>
+              <p><strong>6.2.2 Phone questions</strong></p>
+              <ul>
+                <li>How many times per week/month does it trip?</li>
+                <li>Does it happen at similar times of day?</li>
+                <li>Is it linked to specific weather (heat, storms)?</li>
+              </ul>
+              <p><strong>6.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Correlate trips with production peaks or grid events.</li>
+                <li>Check for repeated error codes around those times.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">6.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Cause identified (e.g., undersized breaker) and actions planned. Close ticket once fix is confirmed.</p>
+              <p><strong>If no:</strong> Unclear or serious behaviour. Escalate to engineering / installer.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 -->
+      <section class="card expanded" data-id="7">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">7 · Electrical boxes</span>
+            <div class="card-title-row">
+              <h2>Visual inspection of electrical boxes</h2>
+            </div>
+            <p class="card-subtitle">
+              Check closed doors, cracks, or burn marks (no opening).
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>7.1 Identification</h3>
+              <p>Customer suspects damage or water ingress in boxes.</p>
+            </div>
+            <div class="block-section">
+              <h3>7.2 Verification</h3>
+              <p><strong>7.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send us clear photos of each electrical box (closed) and any visible damage (cracks, burn marks).”</li>
+              </ul>
+              <p><strong>7.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Do you see any cracks or signs of burning?</li>
+                <li>Are the doors/covers properly closed?</li>
+                <li>Has there been any recent impact (car, ladder, object)?</li>
+              </ul>
+              <p><strong>7.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Look for intermittent faults, ground faults, arc or insulation errors.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">7.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Issue is cosmetic only, no risk. Advise and close ticket.</p>
+              <p><strong>If no:</strong> Safety risk or possible water ingress. Escalate to urgent field visit.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8 -->
+      <section class="card expanded" data-id="8">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">8 · Inverter</span>
+            <div class="card-title-row">
+              <h2>Take a photo or video of the inverter</h2>
+            </div>
+            <p class="card-subtitle">
+              Capture display, LEDs and surroundings when there is a doubt.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>8.1 Identification</h3>
+              <p>Customer reports “inverter error” or strange behaviour.</p>
+            </div>
+            <div class="block-section">
+              <h3>8.2 Verification</h3>
+              <p><strong>8.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please record a short video of the inverter, showing the display and any lights, and send it to us.”</li>
+              </ul>
+              <p><strong>8.2.2 Phone questions</strong></p>
+              <ul>
+                <li>What message do you see on the screen (if any)?</li>
+                <li>Are there any symbols or codes you can read?</li>
+                <li>Does the sound of the inverter change (buzzing, clicking)?</li>
+              </ul>
+              <p><strong>8.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check for error codes or offline periods.</li>
+                <li>Check inverter status in the portal (OK, warning, fault).</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">8.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Known, simple issue (e.g., grid outage) explained. Close ticket.</p>
+              <p><strong>If no:</strong> Unknown/error code. Escalate with video to inverter specialist.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9 -->
+      <section class="card expanded" data-id="9">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">9 · Inverter</span>
+            <div class="card-title-row">
+              <h2>Check inverter LEDs / lights</h2>
+            </div>
+            <p class="card-subtitle">
+              Understand LED colours and blinking patterns.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>9.1 Identification</h3>
+              <p>Customer reports blinking or red lights on the inverter.</p>
+            </div>
+            <div class="block-section">
+              <h3>9.2 Verification</h3>
+              <p><strong>9.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send us a photo where we can clearly see the LED lights and their colours.”</li>
+              </ul>
+              <p><strong>9.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Are the LEDs steady or blinking?</li>
+                <li>What colour are they (green, yellow, red)?</li>
+                <li>Are they always like this or only sometimes?</li>
+              </ul>
+              <p><strong>9.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Cross-check LED meaning with inverter manual (OK/fault/standby).</li>
+                <li>Confirm corresponding status in monitoring (producing / fault).</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">9.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> LEDs indicate normal operation. Reassure customer and close ticket.</p>
+              <p><strong>If no:</strong> LEDs indicate a fault. Escalate to technical with photos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 -->
+      <section class="card expanded" data-id="10">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">10 · Inverter</span>
+            <div class="card-title-row">
+              <h2>Check inverter display</h2>
+            </div>
+            <p class="card-subtitle">
+              Read codes, power values and daily energy.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>10.1 Identification</h3>
+              <p>Customer sees a message or abnormal value on the display.</p>
+            </div>
+            <div class="block-section">
+              <h3>10.2 Verification</h3>
+              <p><strong>10.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send a close-up photo of the inverter screen, including any numbers or error messages.”</li>
+              </ul>
+              <p><strong>10.2.2 Phone questions</strong></p>
+              <ul>
+                <li>What values do you see for power/energy today?</li>
+                <li>Is there any text like ‘Error’, ‘Fault’, or an error number?</li>
+                <li>Since when do you see this message?</li>
+              </ul>
+              <p><strong>10.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Match display values vs. monitoring data.</li>
+                <li>Look for error code documentation.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">10.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Normal information (e.g., standby at night) explained. Close ticket.</p>
+              <p><strong>If no:</strong> Real error identified. Escalate with code and photo.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11 -->
+      <section class="card expanded" data-id="11">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">11 · Panels</span>
+            <div class="card-title-row">
+              <h2>Look for new shadows</h2>
+            </div>
+            <p class="card-subtitle">
+              Check if trees or new objects are shading the array.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>11.1 Identification</h3>
+              <p>Customer reports reduced production; possible shading.</p>
+            </div>
+            <div class="block-section">
+              <h3>11.2 Verification</h3>
+              <p><strong>11.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send photos of the panels around midday so we can see if any objects cast shade.”</li>
+              </ul>
+              <p><strong>11.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Have any trees grown significantly?</li>
+                <li>Have new objects been installed (antenna, AC unit, awning)?</li>
+                <li>When did you notice the drop in production?</li>
+              </ul>
+              <p><strong>11.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check production curve shape (flat cut at certain hours).</li>
+                <li>Compare current vs. previous year same period.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">11.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Shading clearly explains losses. Suggest trimming/removal and close ticket.</p>
+              <p><strong>If no:</strong> Shading not confirmed. Escalate for deeper analysis.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12 -->
+      <section class="card expanded" data-id="12">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">12 · Panels</span>
+            <div class="card-title-row">
+              <h2>Check visible dirt</h2>
+            </div>
+            <p class="card-subtitle">
+              Assess if soiling is strong enough to affect performance.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>12.1 Identification</h3>
+              <p>Customer suspects dirty panels.</p>
+            </div>
+            <div class="block-section">
+              <h3>12.2 Verification</h3>
+              <p><strong>12.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send close photos of the panels, especially the lower edges.”</li>
+              </ul>
+              <p><strong>12.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Are the panels near a dusty road, construction, or many birds?</li>
+                <li>When were the panels last cleaned?</li>
+                <li>Do you see big opaque stains (mud, droppings)?</li>
+              </ul>
+              <p><strong>12.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Look for gradual production loss over time, not sudden.</li>
+                <li>Compare dusty season vs. clean period.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">12.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Dirt clearly visible; recommend cleaning. Close ticket once customer informed.</p>
+              <p><strong>If no:</strong> Dirt not significant. Escalate for other root causes.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13 -->
+      <section class="card expanded" data-id="13">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">13 · Panels</span>
+            <div class="card-title-row">
+              <h2>Look for visible damage</h2>
+            </div>
+            <p class="card-subtitle">
+              Cracks, broken glass or visibly bent modules.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>13.1 Identification</h3>
+              <p>Customer sees cracks, broken glass, or bent panels.</p>
+            </div>
+            <div class="block-section">
+              <h3>13.2 Verification</h3>
+              <p><strong>13.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send clear photos of the damaged area from different angles.”</li>
+              </ul>
+              <p><strong>13.2.2 Phone questions</strong></p>
+              <ul>
+                <li>When did you first see this damage?</li>
+                <li>Was there any impact (hail, object, roof work)?</li>
+                <li>Is the panel making any unusual noise or sparking?</li>
+              </ul>
+              <p><strong>13.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check impact on string production.</li>
+                <li>Check for fault/error related to that string.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">13.3 Resolved?</span>
+              </div>
+              <p><strong>Always:</strong> There is no remote fix. Escalate to installer/insurance for on-site repair.</p>
+              <p>Close ticket only once repair or next step is confirmed.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 14 -->
+      <section class="card expanded" data-id="14">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">14 · Structure</span>
+            <div class="card-title-row">
+              <h2>Check structures and fixings</h2>
+            </div>
+            <p class="card-subtitle">
+              Loose, twisted or lifted supports after wind or impacts.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>14.1 Identification</h3>
+              <p>Customer sees loose or twisted structure parts.</p>
+            </div>
+            <div class="block-section">
+              <h3>14.2 Verification</h3>
+              <p><strong>14.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send wide photos of the array showing any part that looks loose or lifted.”</li>
+              </ul>
+              <p><strong>14.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Did this appear after strong wind or a storm?</li>
+                <li>Do you see panels moving or rattling?</li>
+                <li>Is there any risk of something falling?</li>
+              </ul>
+              <p><strong>14.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check if production is affected.</li>
+                <li>Check if any strings are offline.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">14.3 Resolved?</span>
+              </div>
+              <p><strong>Typically no:</strong> Always treat as potential safety issue. Escalate to urgent site visit.</p>
+              <p>Close only after intervention is completed or scheduled.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 15 -->
+      <section class="card expanded" data-id="15">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">15 · Site security</span>
+            <div class="card-title-row">
+              <h2>Fences and access</h2>
+            </div>
+            <p class="card-subtitle">
+              Check for open gates, vandalism or intrusion signs.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>15.1 Identification</h3>
+              <p>Customer reports open gate, broken fence or possible intrusion.</p>
+            </div>
+            <div class="block-section">
+              <h3>15.2 Verification</h3>
+              <p><strong>15.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send photos of the damaged fence/door and any suspicious area.”</li>
+              </ul>
+              <p><strong>15.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Have you noticed missing equipment or cables?</li>
+                <li>When did you last see the fence intact?</li>
+                <li>Have you contacted local security/authorities if vandalism is suspected?</li>
+              </ul>
+              <p><strong>15.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check for sudden production stop or inverter disconnection.</li>
+                <li>Check event log for sudden faults.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">15.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> No damage to system, fence repaired by owner. Close ticket.</p>
+              <p><strong>If no:</strong> Theft or damage. Escalate (insurance, installer, security).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 16 -->
+      <section class="card expanded" data-id="16">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">16 · Vegetation</span>
+            <div class="card-title-row">
+              <h2>Vegetation around the installation</h2>
+            </div>
+            <p class="card-subtitle">
+              Grass or plants touching panels, cables or boxes.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>16.1 Identification</h3>
+              <p>Customer reports tall grass or plants.</p>
+            </div>
+            <div class="block-section">
+              <h3>16.2 Verification</h3>
+              <p><strong>16.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send photos of vegetation around the panels and electrical boxes.”</li>
+              </ul>
+              <p><strong>16.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Does vegetation touch the back of the panels?</li>
+                <li>Is it blocking access to boxes or cables?</li>
+                <li>Can you safely cut it yourself?</li>
+              </ul>
+              <p><strong>16.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check for overheating or ground faults.</li>
+                <li>Check for partial shading patterns.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">16.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Customer or gardener clears vegetation. Close ticket.</p>
+              <p><strong>If no:</strong> Risk to equipment. Escalate to maintenance/field team.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 17 -->
+      <section class="card expanded" data-id="17">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">17 · Animals</span>
+            <div class="card-title-row">
+              <h2>Animals and nests</h2>
+            </div>
+            <p class="card-subtitle">
+              Birds, rodents or nests near panels and boxes.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>17.1 Identification</h3>
+              <p>Customer reports birds, nests, or animals near equipment.</p>
+            </div>
+            <div class="block-section">
+              <h3>17.2 Verification</h3>
+              <p><strong>17.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send photos of the nests/animals and where they are located.”</li>
+              </ul>
+              <p><strong>17.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Are animals entering any electrical box or under panels?</li>
+                <li>Have you noticed any chewing of cables?</li>
+                <li>Since when have they been there?</li>
+              </ul>
+              <p><strong>17.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check for intermittent faults or ground faults.</li>
+                <li>Check for sudden drops or oscillations in production.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">17.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Pest control / removal arranged and system safe. Close ticket.</p>
+              <p><strong>If no:</strong> Risk to cables/equipment. Escalate (installer / pest control).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 18 -->
+      <section class="card expanded" data-id="18">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">18 · Weather</span>
+            <div class="card-title-row">
+              <h2>After hail</h2>
+            </div>
+            <p class="card-subtitle">
+              Post-hail visual and production checks.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>18.1 Identification</h3>
+              <p>Customer reports a hailstorm event.</p>
+            </div>
+            <div class="block-section">
+              <h3>18.2 Verification</h3>
+              <p><strong>18.2.1 Templates</strong></p>
+              <ul>
+                <li>“After the hail, please send photos of the panels from a safe place to check for cracks.”</li>
+              </ul>
+              <p><strong>18.2.2 Phone questions</strong></p>
+              <ul>
+                <li>When did the hailstorm occur?</li>
+                <li>Do you see any visible cracks or broken glass?</li>
+                <li>Is there any water or glass on the ground?</li>
+              </ul>
+              <p><strong>18.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Compare production before and after the hailstorm.</li>
+                <li>Check for new inverter error codes.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">18.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> No damage detected, production normal. Close ticket.</p>
+              <p><strong>If no:</strong> Damage or loss of production. Escalate to installer / insurance.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 19 -->
+      <section class="card expanded" data-id="19">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">19 · Weather</span>
+            <div class="card-title-row">
+              <h2>After strong winds or storms</h2>
+            </div>
+            <p class="card-subtitle">
+              Misaligned panels, fallen objects or leaks after storms.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>19.1 Identification</h3>
+              <p>Customer reports strong wind or storm event.</p>
+            </div>
+            <div class="block-section">
+              <h3>19.2 Verification</h3>
+              <p><strong>19.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send photos of the array and surroundings to check if anything has moved or fallen on the panels.”</li>
+              </ul>
+              <p><strong>19.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Do you see any misaligned panels or loose parts?</li>
+                <li>Are there objects (branches, tiles, tarps) on top of the panels?</li>
+                <li>Any water leaks inside the house near cabling?</li>
+              </ul>
+              <p><strong>19.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check for abrupt production changes after the storm.</li>
+                <li>Check for inverter disconnections.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">19.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> No damage, system normal. Close ticket.</p>
+              <p><strong>If no:</strong> Visible damage or risk. Escalate to field inspection.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 20 -->
+      <section class="card expanded" data-id="20">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">20 · Weather</span>
+            <div class="card-title-row">
+              <h2>After snow</h2>
+            </div>
+            <p class="card-subtitle">
+              Snow coverage and recovery of production.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>20.1 Identification</h3>
+              <p>Customer reports snow covering panels.</p>
+            </div>
+            <div class="block-section">
+              <h3>20.2 Verification</h3>
+              <p><strong>20.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send a photo of the panels with snow so we can estimate coverage.”</li>
+              </ul>
+              <p><strong>20.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Are the panels fully or partially covered?</li>
+                <li>How long has the snow been there?</li>
+                <li>Is there ice or only soft snow?</li>
+              </ul>
+              <p><strong>20.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check production level during snowy days vs. normal.</li>
+                <li>Confirm that zero or low production matches snow coverage.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">20.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Snow melts and production recovers. Close ticket.</p>
+              <p><strong>If no:</strong> Structural damage or persistent problem. Escalate.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 21 -->
+      <section class="card expanded" data-id="21">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">21 · Cleaning</span>
+            <div class="card-title-row">
+              <h2>Decide if cleaning is needed</h2>
+            </div>
+            <p class="card-subtitle">
+              Evaluate if soiling is severe enough before cleaning.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>21.1 Identification</h3>
+              <p>Customer asks if cleaning is necessary.</p>
+            </div>
+            <div class="block-section">
+              <h3>21.2 Verification</h3>
+              <p><strong>21.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please send photos of a few representative panels to assess dirt level.”</li>
+              </ul>
+              <p><strong>21.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Are you near a road, industry, or many birds?</li>
+                <li>When was the last rain?</li>
+                <li>Have you ever cleaned the panels?</li>
+              </ul>
+              <p><strong>21.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Look for gradual drop in performance vs. expected.</li>
+                <li>Compare with similar nearby systems if possible.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">21.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Recommend cleaning or confirm it’s not needed. Close ticket.</p>
+              <p><strong>If no:</strong> Dirt not the main cause. Escalate for further diagnostics.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 22 -->
+      <section class="card expanded" data-id="22">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">22 · Cleaning</span>
+            <div class="card-title-row">
+              <h2>If customer cleans the panels</h2>
+            </div>
+            <p class="card-subtitle">
+              Safety guidelines and performance comparison after cleaning.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>22.1 Identification</h3>
+              <p>Customer wants to clean panels themselves.</p>
+            </div>
+            <div class="block-section">
+              <h3>22.2 Verification</h3>
+              <p><strong>22.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please only clean if you can reach the panels safely from the ground or a safe terrace, and use clean water and a soft sponge.”</li>
+              </ul>
+              <p><strong>22.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Can you access panels without climbing on unsafe roofs?</li>
+                <li>Do you have high-pressure cleaners (we do not recommend using them directly)?</li>
+                <li>Are you comfortable doing this yourself?</li>
+              </ul>
+              <p><strong>22.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Compare production before and after cleaning.</li>
+                <li>Check if the improvement is consistent.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">22.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Safe cleaning done and production improved. Close ticket.</p>
+              <p><strong>If no:</strong> No improvement or risk. Escalate to professional cleaning / technical.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 23 -->
+      <section class="card expanded" data-id="23">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">23 · Information</span>
+            <div class="card-title-row">
+              <h2>Keep installation information</h2>
+            </div>
+            <p class="card-subtitle">
+              Ensure basic system data and contacts are available.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>23.1 Identification</h3>
+              <p>Customer lacks or asks for basic installation data.</p>
+            </div>
+            <div class="block-section">
+              <h3>23.2 Verification</h3>
+              <p><strong>23.2.1 Templates</strong></p>
+              <ul>
+                <li>“We recommend keeping installer contact, inverter model, and app login in one place. We can resend the details if needed.”</li>
+              </ul>
+              <p><strong>23.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Do you have your installer’s contact?</li>
+                <li>Do you know your inverter brand/model?</li>
+                <li>Do you have access to the monitoring app?</li>
+              </ul>
+              <p><strong>23.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Confirm correct plant is registered under their account.</li>
+                <li>Check if contact info is updated in your system.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">23.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Information provided or updated. Close ticket.</p>
+              <p><strong>If no:</strong> Missing data from old installer. Escalate internally.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 24 -->
+      <section class="card expanded" data-id="24">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">24 · Routine</span>
+            <div class="card-title-row">
+              <h2>Create a simple routine</h2>
+            </div>
+            <p class="card-subtitle">
+              Weekly app checks and monthly visual inspection for owners.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>24.1 Identification</h3>
+              <p>Customer wants guidance on regular checks.</p>
+            </div>
+            <div class="block-section">
+              <h3>24.2 Verification</h3>
+              <p><strong>24.2.1 Templates</strong></p>
+              <ul>
+                <li>“We suggest: check the app weekly, do a visual inspection monthly, and note any extreme weather events.”</li>
+              </ul>
+              <p><strong>24.2.2 Phone questions</strong></p>
+              <ul>
+                <li>How often do you currently check the system?</li>
+                <li>Do you prefer email reminders or a simple checklist?</li>
+                <li>Are you comfortable taking occasional photos?</li>
+              </ul>
+              <p><strong>24.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>General system health review (no specific step).</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">24.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Routine agreed and understood. Close ticket.</p>
+              <p><strong>If no:</strong> Customer needs more training. Escalate to onboarding/support.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 25 -->
+      <section class="card expanded" data-id="25">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">25 · Logging</span>
+            <div class="card-title-row">
+              <h2>Record incidents and breaker trips</h2>
+            </div>
+            <p class="card-subtitle">
+              Use a simple log to support technical diagnostics.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>25.1 Identification</h3>
+              <p>Customer has recurring issues but no records.</p>
+            </div>
+            <div class="block-section">
+              <h3>25.2 Verification</h3>
+              <p><strong>25.2.1 Templates</strong></p>
+              <ul>
+                <li>“Please start a simple log with date, time, issue type, breaker affected, and send us a photo each time it happens.”</li>
+              </ul>
+              <p><strong>25.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Do you have any notes from previous incidents?</li>
+                <li>How often has this happened in the last month?</li>
+                <li>What did you do each time (reset, call electrician…)?</li>
+              </ul>
+              <p><strong>25.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Correlate logged incidents with monitoring events.</li>
+                <li>Look for patterns over days/weeks.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">25.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Pattern identified and solution proposed. Close ticket after fix.</p>
+              <p><strong>If no:</strong> Still unclear. Escalate with log to engineering.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 26 -->
+      <section class="card expanded" data-id="26">
+        <button class="card-header" type="button">
+          <div class="card-header-main">
+            <span class="card-number">26 · Escalation</span>
+            <div class="card-title-row">
+              <h2>Know when to call a professional</h2>
+            </div>
+            <p class="card-subtitle">
+              Boundary between user checks and mandatory professional help.
+            </p>
+          </div>
+          <div class="card-header-meta">
+            <span class="status-pill">Open</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </button>
+        <div class="card-body">
+          <div class="card-body-inner">
+            <div class="block-section">
+              <h3>26.1 Identification</h3>
+              <p>Customer describes symptoms beyond safe user checks.</p>
+            </div>
+            <div class="block-section">
+              <h3>26.2 Verification</h3>
+              <p><strong>26.2.1 Templates</strong></p>
+              <ul>
+                <li>“Based on your description, this requires a professional on-site visit for safety.”</li>
+              </ul>
+              <p><strong>26.2.2 Phone questions</strong></p>
+              <ul>
+                <li>Do you notice burning smells, sparking, or loud noises?</li>
+                <li>Is there visible damage to panels, cables, or boxes?</li>
+                <li>Is anyone or anything in immediate danger?</li>
+              </ul>
+              <p><strong>26.2.3 Monitoring checks</strong></p>
+              <ul>
+                <li>Check for critical alarms (ground fault, isolation, arc fault).</li>
+                <li>Check if system has shut down for safety.</li>
+              </ul>
+            </div>
+            <div class="resolved-block">
+              <div class="resolved-header">
+                <input type="checkbox" class="resolved-checkbox" />
+                <span class="label">26.3 Resolved?</span>
+              </div>
+              <p><strong>If yes:</strong> Visit scheduled and customer informed of next steps. Close ticket after communication.</p>
+              <p><strong>If no:</strong> Emergency situation. Escalate immediately to emergency protocol / local electrician.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="footnote">
+      Built for PV owners &amp; support teams · Dark-mode checklist · GitHub Pages ready
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const cards = Array.from(document.querySelectorAll(".card"));
+      const expandAllBtn = document.getElementById("expandAll");
+      const collapseAllBtn = document.getElementById("collapseAll");
+      const hideResolvedCheckbox = document.getElementById("hideResolved");
+
+      function updateCardState(card) {
+        const checkbox = card.querySelector(".resolved-checkbox");
+        const statusPill = card.querySelector(".status-pill");
+
+        if (!checkbox || !statusPill) return;
+
+        if (checkbox.checked) {
+          card.classList.add("resolved");
+          statusPill.textContent = "Done";
+          statusPill.classList.add("done");
+        } else {
+          card.classList.remove("resolved");
+          statusPill.textContent = "Open";
+          statusPill.classList.remove("done");
+        }
+
+        if (hideResolvedCheckbox.checked && checkbox.checked) {
+          card.classList.add("hidden");
+        } else {
+          card.classList.remove("hidden");
+        }
+      }
+
+      cards.forEach((card) => {
+        const header = card.querySelector(".card-header");
+        const checkbox = card.querySelector(".resolved-checkbox");
+
+        if (header) {
+          header.addEventListener("click", (e) => {
+            // avoid toggling when clicking the checkbox inside resolved block
+            if (e.target.closest(".resolved-block")) return;
+            card.classList.toggle("expanded");
+          });
+        }
+
+
+        if (checkbox) {
+          checkbox.addEventListener("change", () => updateCardState(card));
+          // initial state
+          updateCardState(card);
+        }
+      });
+
+      expandAllBtn.addEventListener("click", () => {
+        cards.forEach((card) => card.classList.add("expanded"));
+      });
+
+      collapseAllBtn.addEventListener("click", () => {
+        cards.forEach((card) => card.classList.remove("expanded"));
+      });
+
+      hideResolvedCheckbox.addEventListener("change", () => {
+        cards.forEach((card) => updateCardState(card));
+      });
+    })();
+  </script>
+</body>
+</html>
