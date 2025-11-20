@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
+
       --bg: #020617;
       --bg-elevated: #020617;
       --bg-card: #020617;
